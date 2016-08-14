@@ -1,0 +1,12 @@
+\set ECHO none
+            _range_from_array__create            
+-------------------------------------------------
+ range_from_array(integer[])
+ range_from_array(numeric[])
+ range_from_array(timestamp without time zone[])
+ range_from_array(timestamp with time zone[])
+ range_from_array(date[])
+ range_from_array(bigint[])
+(6 rows)
+
+# TRANSACTION INTENTIONALLY LEFT OPEN!
