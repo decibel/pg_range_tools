@@ -74,6 +74,7 @@
     "X_comment": "Valid keys for 'requires' are requires, recommends, suggests, or conflicts.",
     "prereqs": {
 
+        "X_comment": "Prior to 9.5 the creation functions did not exist.",
         "build": {
             "requires": {
                 "PostgreSQL": "9.5.0"
