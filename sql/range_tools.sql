@@ -17,6 +17,34 @@ CREATE OR REPLACE VIEW range_type AS
       LEFT JOIN pg_namespace ocn ON ocn.oid = oc.opcnamespace
 ;
 
+CREATE OR REPLACE FUNCTION range__create(
+  rangetype anyrange
+  , lower anyelement
+  , upper anyelement
+  , bounds text DEFAULT '[]'
+) RETURNS anyrange LANGUAGE plpgsql IMMUTABLE AS $body$
+DECLARE
+  sql CONSTANT text := format(
+    $$SELECT %s( $1, $2, $3 ) AS range$$
+    , pg_catalog.pg_typeof(rangetype)::text
+  );
+
+  r record;
+BEGIN
+  RAISE DEBUG 'sql = %', sql;
+
+  EXECUTE sql INTO STRICT r USING lower, upper, bounds;
+
+  RETURN r.range;
+END;
+$body$;
+COMMENT ON FUNCTION range__create(
+  rangetype anyrange
+  , lower anyelement
+  , upper anyelement
+  , bounds text 
+) IS $$Creates a range of "rangetype" type, from lower, upper and bounds. This is the same as calling the rangetype's constructor directly, but this way you don't have to use different function names. "rangetype" can be set to anything (including NULL); it just needs to be the correct type.$$;
+
 CREATE OR REPLACE FUNCTION _range_from_array__create(
   range_type regtype
 ) RETURNS regprocedure LANGUAGE plpgsql
